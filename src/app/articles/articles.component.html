@@ -1,1 +1,101 @@
-<p>articles works!</p>
+<div *ngIf="voirListeArticles">
+    <h4 class="card-title mb-0 flex-grow-1">Liste des articles</h4>
+    <br>
+    <div class="flex-shrink-0">
+        <div class="form-check form-switch form-switch-right form-switch-md">
+            <button type="button" class="btn rounded-pill btn-primary" (click)="afficherFormulaireAjouter()">Ajouter</button>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xl-3 col-md-3" *ngFor="let article of articles;  let i = index">
+            <div class="card card-animate">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <img src="{{this.APIEndpoint+'api/image/article/'+article.id}}" style="height:262px; width:262px;">
+                        <h4>{{ article.designation }}</h4>
+                        <p>{{ article.prixUnitaire }} €</p>
+                        <p><button (click)="afficherPageDetail(article.id)">Détails</button></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="voirFormulaireAjout">
+    <h3 class="text-center">Ajout d'un article</h3>
+    <div style="text-align: center;" *ngIf="!erreur" class="alert alert-danger">{{ messageErreur }}</div>
+    <form class="form-horizontal" [formGroup]="articleForm" (ngSubmit)="ajoutArticle()">
+        <div class=" form-group ">
+            <label class="control-label col-sm-2 " for="designation">Designation:</label>
+            <div class="col-sm-10 ">
+                <input type="text" class="form-control" id="designation" placeholder="La désignation de l'article" name="designation" formControlName="designation" [(ngModel)]="articleForm.designation" required>
+                <div class="alert alert-danger" [hidden]="designation.valid || designation.pristine && !designation.touched ">La désignation est obligatoire</div>
+            </div>
+        </div>
+        <div class="form-group ">
+            <label class="control-label col-sm-2 " for="description">Description:</label>
+            <div class="col-sm-10 ">
+                <input type="text" class="form-control" id="description" placeholder="La description de l'article" name="description" formControlName="description" [(ngModel)]="articleForm.description" required>
+                <div class="alert alert-danger" [hidden]="description.valid || description.pristine && !description.touched ">La description est obligatoire</div>
+            </div>
+        </div>
+        <div class="form-group ">
+            <label class="control-label col-sm-2 " for="prixUnitaire">Prix unitaire:</label>
+            <div class="col-sm-10 ">
+                <input type="number" class="form-control" id="prixUnitaire" placeholder="Le prix unitaire de l'article" name="prixUnitaire" formControlName="prixUnitaire" [(ngModel)]="articleForm.prixUnitaire" required>
+                <div class="alert alert-danger" [hidden]="prixUnitaire.valid || prixUnitaire.pristine && !prixUnitaire.touched ">Le prix unitaire est obligatoire</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2 " for="image">Image:</label>
+            <div class="col-sm-10 ">
+                <input type="file" id="image" accept="image/*" class="form-control" name="image" (change)="onSelectFile($event)">
+                <img [src]="imgURL" height="200" *ngIf="imgURL">
+            </div>
+        </div>
+        <div class="form-group ">
+            <div class="col-sm-offset-2 col-sm-10 ">
+                <button type="submit" [disabled]="articleForm.invalid" class="btn btn-primary">Enregistrer</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div *ngIf="!voirPageDetail">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Détail d'une vente</h4>
+                    <div class="flex-shrink-0">
+                        <div class="form-check form-switch form-switch-right form-switch-md">
+                            <button type="button" class="btn rounded-pill btn-primary" (click)="retour()">Retour</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- end card header -->
+                <div class="card-body">
+                    <div class="table-card">
+                        <table class="table mb-0">
+                            <tbody>
+                                <tr>
+                                    <td class="fw-medium">Désignation</td>
+                                    <td>{{ article.designation }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-medium">Prix unitaire</td>
+                                    <td>{{ article.prixUnitaire }} €</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-medium">Description</td>
+                                    <td>{{ article.description }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--end table-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

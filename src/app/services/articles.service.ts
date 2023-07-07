@@ -20,8 +20,8 @@ export class ArticlesService {
 
   //Ajout d'une occurrence d'un article;
   //url: http://localhost:9002/api/ajout/article
-  addArticle(a: FormData): Observable<FormData>{
-    return this.httpClient.post<FormData>(this.url + 'ajout/article', a);
+  addArticle(a: FormData): Observable<Article>{
+    return this.httpClient.post<Article>(this.url + 'ajout/article', a);
   }
 
   //Affichage de toutes les occurrences d'articles;
